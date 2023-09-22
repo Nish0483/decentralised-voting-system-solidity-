@@ -62,11 +62,19 @@ constructor(){
 
      
 // }  
+ 
+function vote(uint num) public votingOpen {
+
+//require  adress is not alreadyvoted
+require(!isVoted[msg.sender],"already voted");
+require(num>0 && num<candidates.length,"wrong index");// checking input
+require(msg.sender!=owner,"owner cant vote");
+candidates[num].numOfVotes++;
+isVoted[msg.sender]=true;
+}
 
 
-
-
- function viwVotesStatus()public view  returns(string[] memory, uint[] memory) {
+function viwVotesStatus()public view  returns(string[] memory, uint[] memory) {
        
         string[] memory candidateNames = new string[](candidates.length);
         uint[] memory candidateVotes = new uint[](candidates.length);
@@ -80,22 +88,8 @@ constructor(){
     
   
   }
-  
-  
-    
- 
-function vote(uint num) public votingOpen {
-
-//require  adress is not alreadyvoted
-require(!isVoted[msg.sender],"already voted");
-require(num>0 && num<candidates.length,"wrong index");// checking input
-require(msg.sender!=owner,"owner cant vote");
-candidates[num].numOfVotes++;
-isVoted[msg.sender]=true;
 
 
-  
-}
 function forceStop() public onlyOwner{
     currentStatus=status.over;
 }
